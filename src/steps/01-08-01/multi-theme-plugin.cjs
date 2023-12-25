@@ -87,41 +87,22 @@ module.exports = plugin(function ({ addBase }) {
     over the keys of the `themes` object.
     ------------------------------
     */
-    '[data-theme="base"]': {
-      '--primary-50': getRgbChannels(themes.base['50']),
-      '--primary-100': getRgbChannels(themes.base['100']),
-      '--primary-200': getRgbChannels(themes.base['200']),
-      '--primary-300': getRgbChannels(themes.base['300']),
-      '--primary-400': getRgbChannels(themes.base['400']),
-      '--primary-500': getRgbChannels(themes.base['500']),
-      '--primary-600': getRgbChannels(themes.base['600']),
-      '--primary-700': getRgbChannels(themes.base['700']),
-      '--primary-800': getRgbChannels(themes.base['800']),
-      '--primary-900': getRgbChannels(themes.base['900']),
-    },
-    '[data-theme="rainforest"]': {
-      '--primary-50': getRgbChannels(themes.rainforest['50']),
-      '--primary-100': getRgbChannels(themes.rainforest['100']),
-      '--primary-200': getRgbChannels(themes.rainforest['200']),
-      '--primary-300': getRgbChannels(themes.rainforest['300']),
-      '--primary-400': getRgbChannels(themes.rainforest['400']),
-      '--primary-500': getRgbChannels(themes.rainforest['500']),
-      '--primary-600': getRgbChannels(themes.rainforest['600']),
-      '--primary-700': getRgbChannels(themes.rainforest['700']),
-      '--primary-800': getRgbChannels(themes.rainforest['800']),
-      '--primary-900': getRgbChannels(themes.rainforest['900']),
-    },
-    '[data-theme="candy"]': {
-      '--primary-50': getRgbChannels(themes.candy['50']),
-      '--primary-100': getRgbChannels(themes.candy['100']),
-      '--primary-200': getRgbChannels(themes.candy['200']),
-      '--primary-300': getRgbChannels(themes.candy['300']),
-      '--primary-400': getRgbChannels(themes.candy['400']),
-      '--primary-500': getRgbChannels(themes.candy['500']),
-      '--primary-600': getRgbChannels(themes.candy['600']),
-      '--primary-700': getRgbChannels(themes.candy['700']),
-      '--primary-800': getRgbChannels(themes.candy['800']),
-      '--primary-900': getRgbChannels(themes.candy['900']),
-    },
+  })
+
+  Object.entries(themes).forEach(([key, value]) => {
+    addBase({
+      [`[data-theme=${key}]`]: {
+        '--primary-50': getRgbChannels(value[50]),
+        '--primary-100': getRgbChannels(value[100]),
+        '--primary-200': getRgbChannels(value[200]),
+        '--primary-300': getRgbChannels(value[300]),
+        '--primary-400': getRgbChannels(value[400]),
+        '--primary-500': getRgbChannels(value[500]),
+        '--primary-600': getRgbChannels(value[600]),
+        '--primary-700': getRgbChannels(value[700]),
+        '--primary-800': getRgbChannels(value[800]),
+        '--primary-900': getRgbChannels(value[900]),
+      },
+    })
   })
 })
