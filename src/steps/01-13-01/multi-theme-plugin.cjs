@@ -10,7 +10,6 @@ const hexRgb = require('hex-rgb')
   config file.
   ------------------------------
 */
-const themes = require('./themes.json')
 
 // ------------------------------
 // Helpers
@@ -47,25 +46,44 @@ function getColorUtilitiesWithCssVariableReferences(input, path = []) {
   )
 }
 
+// Check for valid color themes input
+function checkForValidColorThemesInput(input){
+  const isValid = typeof input === 'object' && Object.keys(input).some(key => typeof input[key] === 'object')
+
+  if (!isValid) {
+    throw new Error('The multi-theme plugin expects a `colorThemes` object passed to it, which contains at least one theme object.')
+  }
+}
+
 // ------------------------------
 // Plugin definition
 // ------------------------------
-module.exports = plugin(
-  function ({ addBase }) {
-    addBase({
-      ':root': getCssVariableDeclarations(Object.values(themes)[0]),
-    })
-    Object.entries(themes).forEach(([key, value]) => {
+module.exports = plugin.withOptions(
+  function (options) {
+    const { colorThemes } = options
+    checkForValidColorThemesInput(colorThemes)
+
+    return function ({ addBase }) {
       addBase({
-        [`[data-theme="${key}"]`]: getCssVariableDeclarations(value),
+        ':root': getCssVariableDeclarations(Object.values(colorThemes)[0]),
       })
-    })
+      Object.entries(colorThemes).forEach(([key, value]) => {
+        addBase({
+          [`[data-theme="${key}"]`]: getCssVariableDeclarations(value),
+        })
+      })
+    }
   },
-  {
-    theme: {
-      extend: {
-        colors: getColorUtilitiesWithCssVariableReferences(Object.values(themes)[0]),
+  function (options) {
+    const { colorThemes } = options
+    checkForValidColorThemesInput(colorThemes)
+
+    return {
+      theme: {
+        extend: {
+          colors: getColorUtilitiesWithCssVariableReferences(Object.values(colorThemes)[0]),
+        },
       },
-    },
+    }
   }
 )
